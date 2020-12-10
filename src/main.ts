@@ -1,23 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { APP_DESCRIPTION, APP_TITLE, BASE_PATH, PORT, SERVER_URL, VERSION } from './config/server';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix(BASE_PATH);
 
   const options = new DocumentBuilder()
-    .setTitle('Fkake API')
-    .setDescription('The API as provided from this implementation flake')
-    .setVersion('1.0')
-    .addServer('http://localhost:3000', 'Localhost test')
-    .setExternalDoc('Swagger JSON file', 'http://localhost:3000/api-json')
+    .setTitle(APP_TITLE)
+    .setDescription(APP_DESCRIPTION)
+    .setVersion(VERSION)
+    .addServer(`${SERVER_URL}/${BASE_PATH}`, 'Localhost test')
+    .setExternalDoc('Swagger JSON file', `${SERVER_URL}/api-json`)
     .build();
   const document = SwaggerModule.createDocument(app, options, {
     operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
+    ignoreGlobalPrefix: true,
   });
 
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
+  await app.listen(PORT);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
