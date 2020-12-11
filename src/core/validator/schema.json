@@ -1,0 +1,207 @@
+{
+  "$id": "https://flake.imagineon.de/schema/draft/2.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Flake Schema",
+  "description": "Describes a new schema to map from Flake Objects and properties to plain old objects and arrays",
+  "type": "object",
+  "properties": {
+    "$id": {
+      "title": "Specific Schema ID",
+      "description": "The specific Flake-Schemas ID. This should be a URL to the schema document.",
+      "type": "string"
+    },
+    "$schema": {
+      "title": "Flake Schema",
+      "description": "The Flake Schema used to describe this specific schema. This also clarifies which version of the Flake Schema is used",
+      "type": "string"
+    },
+    "title": {
+      "title": "Schema Title",
+      "description": "A title for the specific schema",
+      "type": "string"
+    },
+    "services": {
+      "title": "Flake Services",
+      "description": "Services, as described by this schema",
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$"
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/service"
+      }
+    }
+  },
+  "required": ["$id", "$schema", "services"],
+  "definitions": {
+    "service": {
+      "title": "Flake Service",
+      "description": "A single Flake Service, wrapping an object.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "Service name",
+          "type": "string",
+          "pattern": "^[a-zA-Z_][\\w_\\x2D]*$"
+        },
+        "description": {
+          "title": "Service description",
+          "type": "string"
+        },
+        "properties": {
+          "title": "Service properties",
+          "description": "Any properties in this Service",
+          "type": "object",
+          "additionalProperties": {
+            "allOf": [
+              {"$ref": "#/definitions/property"},
+              {"$ref": "#/definitions/property-meta"}
+            ]
+          }
+        },
+        "methods": {
+          "title": "Service methods",
+          "description": "Any methods that this Service exposes for usage",
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-zA-Z_][\\w_]*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/definitions/method"
+          }
+        }
+      },
+      "required": ["properties", "name"]
+    },
+    "method": {
+      "title": "Service Method",
+      "description": "A single method of a Service",
+      "type": "object",
+      "properties": {
+        "description": {
+          "title": "Method description",
+          "type": "string"
+        },
+        "parameters": {
+          "title": "Input Parameters",
+          "description": "A set of input parameters for this method.",
+          "type": "object",
+          "additionalProperties": {
+            "allOf": [
+              {"$ref": "#/definitions/property"},
+              {"$ref": "#/definitions/parameter-meta"}
+            ]
+          }
+        },
+        "success": {
+          "title": "Results",
+          "description": "Any properties returned with a successful method call",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/property"
+          }
+        },
+        "failure": {
+          "title": "Error Codes",
+          "description": "A enum-like mapping of error-codes to human values",
+          "type": "object",
+          "additionalProperties": {
+            "title": "Error Code variant",
+            "type": "object",
+            "properties": {
+              "name": {
+                "title": "Error Code Name",
+                "type": "string",
+                "pattern": "^[a-zA-Z_][\\w_]*$"
+              },
+              "description": {
+                "title": "Error Description",
+                "type": "string"
+              }
+            },
+            "required": ["name"]
+          }
+        }
+      },
+      "required": ["success"]
+    },
+    "property": {
+      "title": "Flake Property",
+      "description": "A single Flake Property of a Service",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "Property Name",
+          "type": "string",
+          "pattern": "^[a-zA-Z_][\\w_\\x2D]*$"
+        },
+        "description": {
+          "title": "Property description",
+          "type": "string"
+        },
+        "type": {
+          "title": "Property type",
+          "type": "string",
+          "enum": ["uint8", "uint16", "uint32", "int8", "int16", "int32", "bool", "uuid", "float", "datetime", "string", "binary"]
+        },
+        "enum": {
+          "title": "Enumaration Options",
+          "description": "Treat this property as an enumaration and map it's values as follows",
+          "type": "object",
+          "additionalProperties": {
+            "title": "Enum Variant",
+            "type": "object",
+            "properties": {
+              "name": {
+                "title": "Enum Variant Name",
+                "type": "string",
+                "pattern": "^[a-zA-Z_][\\w_\\x2D]*$"
+              },
+              "description": {
+                "title": "Enum Variant Description",
+                "type": "string"
+              }
+            },
+            "required": ["name"]
+          }
+        },
+        "rangeMin": {
+          "title": "Valid value range minimum",
+          "description": "Applicable to numeric types, this specifies the minimum value, range inclusive.",
+          "type": "number"
+        },
+        "rangeMax": {
+          "title": "Valid value range maximum",
+          "description": "Applicable to numeric type, this specifies the maximum value, range exclusive.",
+          "type": "number"
+        },
+        "unit": {
+          "title": "The unit of the property",
+          "description": "Applicable to any type (most likely numeric), specifies the unit of the value",
+          "type": "string"
+        }
+      },
+      "required": ["name", "type"]
+    },
+    "property-meta": {
+      "description": "Meta information specific to Object-Properties",
+      "type": "object",
+      "properties": {
+        "readonly": {
+          "title": "Readonly Property",
+          "type": "boolean"
+        }
+      }
+    },
+    "parameter-meta": {
+      "description": "Meta information specific to Method-Parameters",
+      "type": "object",
+      "properties": {
+        "optional": {
+          "title": "Optional parameter (required by default!)",
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
