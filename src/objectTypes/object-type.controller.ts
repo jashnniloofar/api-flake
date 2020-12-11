@@ -11,15 +11,15 @@ import {
   TYPE_PARAMETER,
 } from 'src/config/server';
 
-import { BaseService } from './base.service';
-import { Property, InstanceInfo, ObjectTypeInfo, ServiceDepth } from './entities/objectTypeInfo.entity';
+import { ObjectTypeService } from './object-type.service';
+import { Property, InstanceInfo, ObjectTypeInfo, ServiceDepth } from './entities/object-type-info.entity';
 import { HistoryType, PropertyHistory, ValueHistory } from './dto/instanse-history.dto';
 import { PROPERTY_PARAMETER } from '../config/server';
 
 @ApiTags(OBJECT_TYPE_TITLE)
 @Controller(OBJECT_TYPE_ROUTE)
-export class BaseController {
-  constructor(private readonly baseService: BaseService) {}
+export class ObjectTypeController {
+  constructor(private readonly baseService: ObjectTypeService) {}
 
   @ApiOperation({ summary: 'Lists all known objectTypes' })
   @ApiOkResponse({ description: 'The found record', type: [ObjectTypeInfo] })

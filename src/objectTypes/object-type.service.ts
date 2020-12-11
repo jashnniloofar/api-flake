@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ObjectTypeInfo, InstanceInfo, Property } from './entities/objectTypeInfo.entity';
+import { ObjectTypeInfo, InstanceInfo, Property } from './entities/object-type-info.entity';
 import { PropertyHistory, ValueHistory } from './dto/instanse-history.dto';
 @Injectable()
-export class BaseService {
+export class ObjectTypeService {
   async listServices(depth: string): Promise<ObjectTypeInfo[]> {
     return [];
   }
@@ -21,7 +21,7 @@ export class BaseService {
 
   async getInstanceHistory(objType: string, instanceId: string, lastSeen: number, type: string): Promise<PropertyHistory[]> {
     console.log(type);
-    
+
     return [];
   }
 

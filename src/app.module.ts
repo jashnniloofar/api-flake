@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { BaseModule } from './base/base.module';
+import { ObjectTypeModule } from './objectTypes/object-type.module';
 
 @Module({
-  imports: [BaseModule],
+  imports: [ObjectTypeModule],
 })
 export class AppModule {}
