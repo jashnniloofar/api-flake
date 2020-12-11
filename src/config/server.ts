@@ -8,6 +8,10 @@ export const OBJECT_TYPE_TITLE = 'Object Types';
 export const OBJECT_TYPE_PARAMETER = 'objectType';
 export const DEPTH_PARAMETER = 'depth';
 export const INSTANCE_ID_PARAMETER = 'instanceId';
+export const HISTORY_ROUTE = 'history';
+export const LAST_SEEN_PARAMETER = 'lastSeen';
+export const TYPE_PARAMETER = 'type';
+export const PROPERTY_PARAMETER = 'property';
 
 export const BAD_REQUEST = 400;
 export const UNAUTHORIZED = 401;

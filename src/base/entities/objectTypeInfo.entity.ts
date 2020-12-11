@@ -29,11 +29,10 @@ export class Property {
   /**
    * @example pressure
    */
-  key: string;
-  /**
-   * @example 1002.7138061523438
-   */
-  value: string | number | boolean;
+  name: string;
+
+  @ApiProperty({ type: 'number | string | boolean', description: 'Value', examples: ['OK', 1002.7138, false] })
+  value: number | string | boolean;
 }
 
 export enum ServiceDepth {
