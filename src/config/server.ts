@@ -15,6 +15,9 @@ export const PROPERTY_PARAMETER = 'property';
 export const SCHEMA_ROUTE = 'schemas';
 export const SCHEMA_ROUTE_TITLE = 'Schemas';
 export const SCHEMA_UUID_PARAMETER = 'schema-uuid';
+export const ALARMS_ROUTE = 'alarms';
+export const ALARMS_TITLE = 'Alarms';
+export const CONFIG_ROUTE = 'config';
 
 export const BAD_REQUEST = 400;
 export const UNAUTHORIZED = 401;
